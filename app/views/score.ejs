@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h2 class="h1 display-4"> Score obtenu</h2>
+     <p class="lead h2 display-4"><%= score %></p>
+     <p class="lead">sur un total de <%= questionNb %> questions</p>
+</div>
+
+<% if(questionNb==score){%>
+    <p class="lead display-3">Bravo ! C'est un sans faute !</p>
+<%}%>
+
+<%- include('partials/footer') %>
