@@ -8,7 +8,7 @@ const userController = require('./controllers/userController');
 const adminController = require('./controllers/adminController');
 
 // importer les middlewares
-const adminMiddleware = require('./middlewares/admin');
+const adminModule = require('./middlewares/admin');
 
 const router = express.Router();
 
@@ -36,7 +36,16 @@ router.get('/disconnect', userController.disconnect);
 
 router.get('/profile', userController.profilePage);
 
-// admin
-router.get('/admin', adminMiddleware, adminController.adminPage);
+//ADMIN
+router.use('/admin', adminModule.hasAccess)
+router.get('/admin', adminController.displayAllQuiz);
+router.get('/admin/quiz/delete/:id', adminController.deleteQuizById);
+router.get('/admin/addQuiz', adminController.addQuiz);
+router.get('/admin/users', adminController.displayAllUsers);
+router.get('/admin/users/:id/:role', adminController.setRole);
+
+router.get('/admin/tags', adminController.displayAllTags);
+router.post('/admin/tags', adminController.addTag);
+
 
 module.exports = router;

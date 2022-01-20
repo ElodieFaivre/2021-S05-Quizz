@@ -1,14 +1,15 @@
 
-const adminMiddleware = (req, res, next) => {
-  if(!req.session.user){
-    return res.redirect('/login');
-  }
+const adminAccess = {
+  hasAccess(req, res, next) {
 
-  if(req.session.user.role === 'admin') {
-    next();
-  } else {
-    return res.status(401).render('401');
+      if (req.session.user && req.session.user.role == "admin") {
+          next();
+      }
+      else {
+          res.redirect("/login");
+      }
+
   }
 };
 
-module.exports = adminMiddleware;
+module.exports = adminAccess;
