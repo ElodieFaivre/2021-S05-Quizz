@@ -151,6 +151,33 @@ const adminController = {
 
 
   },
+  
+  async addTagToQuizPage(req,res){
+    try {
+      tagList = await Tag.findAll({ order: ['name'] });
+    }
+    catch (err) {
+      console.error('Something went wrong on request', err);
+    }
+    res.render('admin/addTagToQuiz', {
+      tagList
+    });
+  },
+
+  async addTagToQuizAction(req,res){
+    console.log(req.body.tag);
+    try {
+      const quiz = await Quiz.findByPk(req.params.id);
+      const tag= await Tag.findByPk(req.body.tag);
+      await quiz.addTag(tag);
+    }
+    catch (err) {
+      console.error('Something went wrong on request', err);
+    }
+    res.redirect('/admin');
+
+  },
+
 
   
 }

@@ -1,0 +1,38 @@
+<%- include('./partials/header') %>
+
+
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h2 class="h1 display-4">O'Quiz</h2>
+    </div>
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <form method="post" action="">
+            
+            <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+                <p class="lead">Choisissez un sujet à ajouter</p>
+            </div>
+            <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+                <select id="tag" name="tag">
+                <% for (let tag of tagList) { %>
+                    <div class="col-3 p-4 text-center">
+
+                        <option value="<%=tag.id%>" class=" btn-block btn-lg tag tag--<%= tag.name.toLowerCase() %>">
+                            <%= tag.name%>
+                        </option>
+
+                    </div>
+                    <% } %>
+                </select>
+
+
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">AJOUTER UN TAG</button>
+        </form>
+
+    </div>
+
+    </div>
+
+
+    <%- include('./partials/footer') %>

@@ -16,7 +16,7 @@
                 <td> Description </td>
                 <td> Auteur </td>
                 <td> Tags </td>
-              
+                <td> Ajouter un tag </td>
                 <td> Voir la page du quiz </td>
                 <td> Supprimer </td>
             </tr>
@@ -38,7 +38,8 @@
                     <%}%>
                     
                 </td>
-                
+                <td><a href="/admin/quiz/addTag/<%= quiz.id %>"
+                    class="btn btn-lg btn-block btn-primary text-white">Ajouter un tag</a></td>
                 <td><a href="/quiz/<%= quiz.id %>">Voir la page du quiz</a></td>
                 <td><a href="/admin/quiz/delete/<%= quiz.id %>"
                         class="btn btn-lg btn-block btn-primary text-white">Supprimer le quiz</a></td>

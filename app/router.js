@@ -48,4 +48,6 @@ router.get('/admin/tags', adminController.displayAllTags);
 router.post('/admin/tags', adminController.addTag);
 router.get('/admin/updateTag/:id', adminController.updateTagPage);
 router.post('/admin/updateTag/:id', adminController.updateTagAction);
+router.get('/admin/quiz/addTag/:id', adminController.addTagToQuizPage);
+router.post('/admin/quiz/addTag/:id', adminController.addTagToQuizAction);
 module.exports = router;
