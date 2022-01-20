@@ -1,5 +1,5 @@
 .btn-primary, .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle, .btn-primary.focus, .btn-primary:focus {
-  background-color: #f0f;
+  background-color: rgb(73, 26, 73);
   border-color: rgb(199, 0, 199);
 }
 
@@ -9,7 +9,24 @@
 }
 
 .bg-primary {
-  background-color: #f0f!important;
+  background-color: rgb(73, 26, 73)!important;
+}
+
+.btn-secondary {
+  background-color: rgb(126, 75, 126)!important;
+}
+
+
+.header-admin{
+  background: rgb(186,133,208);
+  background: linear-gradient(0deg, rgba(186,133,208,1) 0%, rgba(73,26,73,1) 100%);
+}
+
+.table-primary, .th_primary:hover {
+  color:white;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color:rgb(117, 23, 117) ;
 }
 
 .form-signin {
@@ -19,7 +36,7 @@
   margin: auto;
 }
 
-.form-signin, .profile {
+.form-signin {
   width: 100%;
   max-width: 600px;
   padding: 15px;
@@ -40,7 +57,11 @@
   color: #dc3545;
 }
 
-.tag {}
+.tag {
+  color: #6a0085;
+  background-color: #f5ccff;
+  border-color: #eeb8ff;
+}
 
 .tag--cinéma {
   color: #004085;
