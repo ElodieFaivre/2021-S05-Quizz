@@ -58,7 +58,7 @@ const quizzController = {
       // }
       let score=0;
       let questionNb=0;
-      
+
       //Verif des réponses
       for(question_id in req.body){
         //Pour chaque question
@@ -79,11 +79,22 @@ const quizzController = {
         if(user_answer==good_answer){
           score++;
         }
-      
-      }
-     
 
-      res.render('score', {score, questionNb});
+        
+      }
+      const quizId = parseInt(req.params.id);
+        const quiz = await Quiz.findByPk(quizId,{
+        include: [
+          { association: 'author'},
+          { association: 'questions', include: ['answers', 'level']},
+          { association: 'tags'}
+        ]
+      });
+
+        const userAnswers= req.body;
+      
+     
+      res.render('score', { quiz, score, questionNb, userAnswers});
 
      
     }catch(err){

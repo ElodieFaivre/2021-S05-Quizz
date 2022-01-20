@@ -1,60 +1,112 @@
 <%- include('partials/header') %>
 
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h2 class="h1 display-4">
-            <%= quiz.title %>
-        </h2>
-        <p class="lead">
-            <%= quiz.description %>
-        </p>
-        <p class="font-weight-bold">par <%= quiz.author.fullname %>
-        </p>
-        <p class="lead">
-            <%= quiz.questions.length %> questions
-        </p>
-    </div>
+    <% if(locals.score){%>
+        <div>
+            <h2 class="h1 display-4"> Score obtenu</h2>
+            <p class="lead h2 display-4">
+                <%= score %>
+            </p>
+            <p class="lead">sur un total de <%= questionNb %> questions</p>
+        </div>
+        <% if(questionNb==score){%>
+            <p class="lead display-3">Bravo ! C'est un sans faute !</p>
+            <%}%>
+                <%}%>
 
-    <div class="row">
+                    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+                        <h2 class="h1 display-4">
+                            <%= quiz.title %>
+                        </h2>
+                        <p class="lead">
+                            <%= quiz.description %>
+                        </p>
+                        <p class="font-weight-bold">par <%= quiz.author.fullname %>
+                        </p>
+                        <p class="lead">
+                            <%= quiz.questions.length %> questions
+                        </p>
+                    </div>
 
-        <% for (let tag of quiz.tags) { %>
-            <div class="col-3 p-4 text-center">
-                <a class="btn btn-block btn-lg tag tag--<%= tag.name.toLowerCase() %>"
-                    href="/quizzes/tag/<%= tag.id %>">
-                    <%= tag.name %>
-                </a>
-            </div>
-            <% } %>
+                    <div class="row">
 
-    </div>
+                        <% for (let tag of quiz.tags) { %>
+                            <div class="col-3 p-4 text-center">
+                                <a class="btn btn-block btn-lg tag tag--<%= tag.name.toLowerCase() %>"
+                                    href="/quizzes/tag/<%= tag.id %>">
+                                    <%= tag.name %>
+                                </a>
+                            </div>
+                            <% } %>
 
-    <div class="row">
-        <form method="POST" action="" class="form-quiz">
-            <% for(let question of quiz.questions) { %>
+                    </div>
 
-                <div class="col-12">
-                    <label class="badge level level--<%= question.level.name.toLowerCase() %>">
-                        <%= question.level.name %>
-                    </label>
-                    <h4>
-                        <%= question.question %>
-                    </h4>
+                    <div class="row">
+                        <% if(locals.score){%>
+                            <% for(let question of quiz.questions) { %>
 
-                    <% for(let index in question.answers){ %>
-                        <div >
-                            <input type="radio" id="<%=question.answers[index].id%>"
-                                name="<%=question.id%>" value="<%=question.answers[index].id%>">
-                            <label for="<%=question.answers[index].id%>">
-                                <%= parseInt(index) + 1 %>. <%= question.answers[index].description %>
-                            </label>
-                        </div>
-                        <% } %>
+                                <div class="col-12">
+                                    <label class="badge level level--<%= question.level.name.toLowerCase() %>">
+                                        <%= question.level.name %>
+                                    </label>
+                                    <h4>
+                                        <%= question.question %>
+                                    </h4>
 
-                </div>
 
-                
-                <% } %>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Valider</button>
-        </form>
-    </div>
+                                    <% for(let index in question.answers){ %>
+                                        <div>
 
-    <%- include('partials/footer') %>
+                                            <% if(question.answers[index].id==question.answer_id){%>
+                                                <p>La réponse était :</p>
+                                                <p>
+                                                    <%= parseInt(index) + 1 %>. <%= question.answers[index].description
+                                                            %>
+                                                </p>
+                                                <% if(userAnswers[question.id]==question.answer_id){%>
+                                                    <p><strong> Bravo, bonne réponse</strong> </p>
+                                                    <%} else { %>
+                                                        <p><em>Vous vous êtes trompé !</em></p>
+                                                        <% } %>
+                                                            <% } %>
+
+                                        </div>
+                                        <% } %>
+
+                                </div>
+                                <% } %>
+                                    <%} else {%>
+                                        <form method="POST" action="" class="form-quiz">
+                                            <% for(let question of quiz.questions) { %>
+
+                                                <div class="col-12">
+                                                    <label
+                                                        class="badge level level--<%= question.level.name.toLowerCase() %>">
+                                                        <%= question.level.name %>
+                                                    </label>
+                                                    <h4>
+                                                        <%= question.question %>
+                                                    </h4>
+
+                                                    <% for(let index in question.answers){ %>
+                                                        <div>
+                                                            <input type="radio" id="<%=question.answers[index].id%>"
+                                                                name="<%=question.id%>"
+                                                                value="<%=question.answers[index].id%>">
+                                                            <label for="<%=question.answers[index].id%>">
+                                                                <%= parseInt(index) + 1 %>. <%=
+                                                                        question.answers[index].description %>
+                                                            </label>
+                                                        </div>
+                                                        <% } %>
+
+                                                </div>
+
+
+                                                <% } %>
+                                                    <button class="btn btn-lg btn-primary btn-block"
+                                                        type="submit">Valider</button>
+                                        </form>
+                                        <%}%>
+                    </div>
+
+                    <%- include('partials/footer') %>
