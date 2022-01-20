@@ -113,19 +113,10 @@ const adminController = {
     catch (err) {
       console.error('Something went wrong on request', err);
     }
-    res.redirect('/tags');
+    res.redirect('./tags');
 
 
   }
-
-
-
-
-
-
-
-
-
 
 }
 
