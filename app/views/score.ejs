@@ -49,9 +49,9 @@
                                         <%= parseInt(index) + 1 %>. <%= question.answers[index].description %>
                                     </p>
                                     <% if(userAnswers[question.id]==question.answer_id){%>
-                                        <p><strong> Bravo, bonne réponse</strong> </p>
+                                        <div class="alert alert-success"><strong> Bravo, bonne réponse</strong> </div>
                                         <%} else { %>
-                                            <p><em>Vous vous êtes trompé !</em></p>
+                                            <div class="alert alert-danger"><em>Vous vous êtes trompé !</em></div>
                                             <% } %>
                                                 <% } %>
 
