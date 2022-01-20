@@ -1,0 +1,23 @@
+<%- include('./partials/header') %>
+
+
+
+<div class="row">
+    <div class="col-6 offset-3">
+      <form action="" method="POST" class="form-signup">
+  
+        <div class="form-label-group">
+          <input type="text" class="form-control" id="tagName" name="tagName"
+            placeholder="<%= tag.name %>">
+          <label for="tagName"><%= tag.name %>
+          </label>
+        </div>
+       
+ 
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Mettre à jour le tag</button>
+      </form>
+    </div>
+  </div>
+
+
+    <%- include('./partials/footer') %>

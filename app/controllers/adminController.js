@@ -116,8 +116,43 @@ const adminController = {
     res.redirect('./tags');
 
 
-  }
+  },
 
+  async updateTagPage(req, res) {
+    
+    const id = req.params.id;
+    let tag={};
+    try{
+       tag = await Tag.findByPk(id);
+    }
+    catch (err) {
+      console.error('Something went wrong on request', err);
+    }
+    res.render('admin/updateTag', { tag });
+
+
+  },
+
+  async updateTagAction(req, res) {
+    
+    const id = req.params.id;
+    
+
+    try{
+      const tag = await Tag.findByPk(id);
+      tag.name = req.body.tagName;
+      await tag.save();
+      console.log(tag);
+    }
+    catch (err) {
+      console.error('Something went wrong on request', err);
+    }
+    res.redirect('/admin/tags');
+
+
+  },
+
+  
 }
 
 module.exports = adminController;

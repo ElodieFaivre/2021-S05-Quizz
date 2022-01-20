@@ -37,7 +37,7 @@ router.get('/disconnect', userController.disconnect);
 router.get('/profile', userController.profilePage);
 
 //ADMIN
-router.use('/admin', adminModule.hasAccess)
+//router.use('/admin', adminModule.hasAccess)
 router.get('/admin', adminController.displayAllQuiz);
 router.get('/admin/quiz/delete/:id', adminController.deleteQuizById);
 router.get('/admin/addQuiz', adminController.addQuiz);
@@ -46,6 +46,6 @@ router.get('/admin/users/:id/:role', adminController.setRole);
 
 router.get('/admin/tags', adminController.displayAllTags);
 router.post('/admin/tags', adminController.addTag);
-
-
+router.get('/admin/updateTag/:id', adminController.updateTagPage);
+router.post('/admin/updateTag/:id', adminController.updateTagAction);
 module.exports = router;
