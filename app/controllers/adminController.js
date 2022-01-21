@@ -5,7 +5,7 @@ dotenv.config();
 
 
 const {
-  Quiz, User, Tag, Level, Answer
+  Quiz, User, Tag, Level, Answer, Question
 
 } = require('../models');
 
@@ -72,45 +72,73 @@ const adminController = {
   async addQuizAction(req, res) {
     try {
       console.log(req.body);
-      //console.log(parseInt(req.body.isGoodAnswer));
-      // for(const i=0; i<4;i++){
-      //   const newAnswer = await Answer.create({
-      //      "description":`req.body.reponse_${i}`
-      //   });
-      // }
-      // const newQuestion = await Question.create({
-      //   "question":req.body.question,
-
-      // });
-
-      const author = await User.findByPk(req.body.userID);
 
       const quiz = await Quiz.build({
         "title": req.body.quiz_title,
         "description": req.body.quiz_description,
+        "user_id": req.body.userID
       });
-      
-      //console.log(quiz);
-      //console.log(author);
-
-      await quiz.setUser(author);
-
-      console.log(Quiz);
-      await quiz.save();
-      
 
 
-      // console.log(quiz);
-      // const tagsArray = req.body.tags;
-      // const tags = await Tag.findAll({
-      //   where: { id: tagsArray }
-      // });
-      // await quiz.setTags(tags);
+      const quizSaved = await quiz.save();
 
-      
+      const tagsArray = req.body.tags;
+      const tags = await Tag.findAll({
+        where: { id: tagsArray }
+      });
+      await quizSaved.addTags(tags);
 
-      
 
+      const newQuestion = await Question.create({
+        "question": req.body.question,
+        "answer_id": 4,
+        "level_id": 2,
+        "quiz_id": quizSaved.id
+      });
+
+
+
+      const Answer1 = await Answer.create({
+        "description": req.body.reponse_0,
+        "question_id": newQuestion.id,
+
+      });
+      const Answer2 = await Answer.create({
+        "description": req.body.reponse_1,
+        "question_id": newQuestion.id,
+
+      });
+      const Answer3 = await Answer.create({
+        "description": req.body.reponse_2,
+        "question_id": newQuestion.id,
+
+      });
+      const Answer4 = await Answer.create({
+        "description": req.body.reponse_3,
+        "question_id": newQuestion.id,
+
+      });
+     
+
+      if(req.body.isGoodAnswer==0){
+        newQuestion.answer_id=Answer1.id;
+        newQuestion.save();
+      }
+      else if(req.body.isGoodAnswer==1){
+        newQuestion.answer_id=Answer2.id;
+        newQuestion.save();
+      }
+      else if(req.body.isGoodAnswer==2){
+        newQuestion.answer_id=Answer3.id;
+        newQuestion.save();
+      }
+      else{
+        newQuestion.answer_id=Answer4.id;
+        newQuestion.save();
+      }
+
+
+      res.redirect('/admin')
 
 
     }
