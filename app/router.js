@@ -37,10 +37,11 @@ router.get('/disconnect', userController.disconnect);
 router.get('/profile', userController.profilePage);
 
 //ADMIN
-router.use('/admin', adminModule.hasAccess)
+//router.use('/admin', adminModule.hasAccess)
 router.get('/admin', adminController.displayAllQuiz);
 router.get('/admin/quiz/delete/:id', adminController.deleteQuizById);
 router.get('/admin/addQuiz', adminController.addQuiz);
+router.post('/admin/addQuiz', adminController.addQuizAction);
 router.get('/admin/quiz/addTag/:id', adminController.addTagToQuizPage);
 router.post('/admin/quiz/addTag/:id', adminController.addTagToQuizAction);
 

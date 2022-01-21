@@ -1,9 +1,11 @@
 
 const dotenv = require('dotenv');
+
 dotenv.config();
 
+
 const {
-  Quiz, User, Tag, Level
+  Quiz, User, Tag, Level, Answer
 
 } = require('../models');
 
@@ -21,6 +23,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
 
     res.render('admin/index', {
@@ -36,27 +39,86 @@ const adminController = {
     let quiz = [];
     try {
       quiz = await Quiz.findByPk(id);
-
-    }
-    catch (err) {
-      console.error('Something went wrong on request', err);
-    }
-    try {
-
       await quiz.destroy();
+
     }
+
 
     catch (err) {
       console.error('Something went wrong on destroy', err);
+      res.status(500).send(err);
     }
 
     res.redirect("/admin");
   },
 
 
-
+  //Page pour ajouter un QUIZ
   async addQuiz(req, res) {
-    res.render("admin/addQuiz");
+    try {
+      const tags = await Tag.findAll();
+      const users = await User.findAll();
+
+      res.render("admin/addQuiz", { tags, users });
+    }
+    catch (err) {
+      console.error('Something went wrong on destroy', err);
+      res.status(500).send(err);
+    }
+
+  },
+
+  //Traitement formulaire ajouter un QUIZ
+  async addQuizAction(req, res) {
+    try {
+      console.log(req.body);
+      //console.log(parseInt(req.body.isGoodAnswer));
+      // for(const i=0; i<4;i++){
+      //   const newAnswer = await Answer.create({
+      //      "description":`req.body.reponse_${i}`
+      //   });
+      // }
+      // const newQuestion = await Question.create({
+      //   "question":req.body.question,
+
+      // });
+
+      const author = await User.findByPk(req.body.userID);
+
+      const quiz = await Quiz.build({
+        "title": req.body.quiz_title,
+        "description": req.body.quiz_description,
+      });
+      
+      //console.log(quiz);
+      //console.log(author);
+
+      await quiz.setUser(author);
+
+      console.log(Quiz);
+      await quiz.save();
+      
+
+
+      // console.log(quiz);
+      // const tagsArray = req.body.tags;
+      // const tags = await Tag.findAll({
+      //   where: { id: tagsArray }
+      // });
+      // await quiz.setTags(tags);
+
+      
+
+      
+
+
+
+    }
+    catch (err) {
+      console.error('Something went wrong on destroy', err);
+      res.status(500).send(err);
+    }
+
   },
 
 
@@ -67,6 +129,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.render('admin/addTagToQuiz', {
       tagList
@@ -83,6 +146,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.redirect('/admin');
 
@@ -97,6 +161,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.render('admin/users', {
       userList
@@ -121,6 +186,7 @@ const adminController = {
     }
     catch (err) {
       console.error(err);
+      res.status(500).send(err);
     }
 
     res.redirect("/admin/users");
@@ -136,6 +202,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.render('admin/tags', {
       tagList
@@ -144,13 +211,20 @@ const adminController = {
 
   //2. AJOUT d'un tag (formulaire, MAJ BDD)
   async addTag(req, res) {
-    const newTag = Tag.build({ "name": req.body.tagName });
 
     try {
-      await newTag.save();
+      if (!req.body.tagName) {
+        console.error('Le nom est obligatoire');
+      }
+      else {
+        const newTag = Tag.build({ "name": req.body.tagName });
+        console.log(newTag);
+        await newTag.save();
+      }
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.redirect('./tags');
 
@@ -167,6 +241,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.render('admin/updateTag', { tag });
 
@@ -180,13 +255,19 @@ const adminController = {
 
 
     try {
+
       const tag = await Tag.findByPk(id);
+
+      if (!req.body.tagName || req.body.tagName == '') {
+        res.render('admin/updateTag', { error: `Le nom du sujet est obligatoire` });
+      }
       tag.name = req.body.tagName;
       await tag.save();
       console.log(tag);
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.redirect('/admin/tags');
 
@@ -204,6 +285,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong', err);
+      res.status(500).send(err);
     }
 
     return res.redirect('/admin/tags');
@@ -217,6 +299,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.render('admin/levels', {
       levelList
@@ -235,16 +318,25 @@ const adminController = {
       });
 
       if (existingLevel) {
-        return res.status(409).render('create_level', { error: 'Ce nom est déja pris par un autre niveau' });
+        return res.status(409).render('admin/levels', { error: 'Ce nom est déja pris par un autre niveau' });
       }
 
-      //Je créé l'instance
-      const newLevel = Level.build({ "name": req.body.levelName });
-      //Je sauvegarde dans la BDD
-      await newLevel.save();
+      if (!req.body.levelName) {
+        console.error('Le nom est obligatoire');
+      }
+      else {
+        //Je créé l'instance
+        const newLevel = Level.build({ "name": req.body.levelName });
+        //Je sauvegarde dans la BDD
+        await newLevel.save();
+
+      }
+
+
     }
     catch (err) {
       console.error('Something went wrong on request', err);
+      res.status(500).send(err);
     }
     res.redirect('/admin/levels');
 
@@ -262,6 +354,7 @@ const adminController = {
     }
     catch (err) {
       console.error('Something went wrong', err);
+      res.status(500).send(err);
     }
 
     return res.redirect('/admin/levels');

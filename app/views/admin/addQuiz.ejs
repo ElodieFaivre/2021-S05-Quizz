@@ -8,26 +8,72 @@
 
     <div class="row">
         <div class="col-6 offset-3">
-             <form action="" method="POST" class="form-addQuiz">
+            <form action="" method="POST" class="form-addQuiz">
 
                 <div class="form-label-group">
-                    <input type="text" class="form-control" id="title" name="title"
-                        placeholder="Titre">
+                    <input type="text" class="form-control" id="quiz_title" name="quiz_title" placeholder="Titre">
                     <label for="title">Titre du quiz</label>
                 </div>
 
                 <div class="form-label-group">
-                    <input type="text" class="form-control" id="description" name="description"
+                    <input type="text" class="form-control" id="quiz_description" name="quiz_description"
                         placeholder="Description">
-                    <label for="description">Description</label>
+                    <label for="quiz_description">Description</label>
                 </div>
+                <h3 class="h3">Auteur</h3>
 
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Ajouter le quiz</button>
+                <% for(user of users){%>
+                    <div class="text-center">
+                        <input type="radio" id="<%=user.id%>" name="userID" value="<%=user.id%>" placeholder="Auteur">
+                        <label for="<%=user.id%>">
+                            <%=user.fullname%>
+                        </label>
+                    </div>
+                    <%}%>
+
+                        <h3 class="h3">Sujets</h3>
+                        <% for(tag of tags){%>
+                            <div class="text-center">
+                                <input type="checkbox" id="<%=tag.id%>" name="tags" value="<%=tag.id%>"
+                                    placeholder="Sujet">
+                                <label class="tag--<%= tag.name.toLowerCase() %>" for="<%=tag.id%>">
+                                    <%=tag.name%>
+                                </label>
+                            </div>
+                            <%}%>
+
+
+                                <h3 class="h3">Questions</h3>
+
+
+                                <input type="text" class="form-control" id="question" name="question"
+                                    placeholder="question">
+                                <label for="question"></label>
+                                <%for (let i=0; i<4; i++){%>
+                                    <div>
+                                    <input type="radio" id="reponse_<%=i%>_isGoodAnswer" name="isGoodAnswer"
+                                        value="<%=i%>" placeholder="reponse">
+                                    <label for="reponse_<%=i%>_isGoodAnswer">
+                                        <input type="text" class="form-control" id="reponse_<%=i%>"
+                                            name="reponse_<%=i%>" placeholder="reponse_<%=i%>" value="reponse_<%=i%>">
+                                        <label for="reponse_<%=i%>"></label>
+                                    </label>
+                                </div>
+                                    <%}%>
+
+
+
+
+
+
+
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Ajouter le
+                                            quiz</button>
             </form>
         </div>
     </div>
 
-   
+
 
 
 
