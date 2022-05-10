@@ -7,4 +7,7 @@ Quizz  using MVC architecture, EJS and PostgreSQL.
 3. Run sql scripts : app/data/import_tables.sql and import_data.sql
 4. npm i
 5. npm start
-  
+
+## How does it look ?
+
+<img src="./gifs/quiz.gif">  
